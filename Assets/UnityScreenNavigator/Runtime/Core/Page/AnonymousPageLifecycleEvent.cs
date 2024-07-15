@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-#if USN_USE_ASYNC_METHODS
-using System.Threading.Tasks;
 using System.Linq;
-
+#if USN_USE_ASYNC_METHODS
+#if USN_USE_UNITASK
+using Task = Cysharp.Threading.Tasks.UniTask;
 #else
-using System.Collections;
+using Task = System.Threading.Tasks.Task;
+#endif
 #endif
 
 namespace UnityScreenNavigator.Runtime.Core.Page

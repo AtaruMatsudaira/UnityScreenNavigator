@@ -1,9 +1,11 @@
 ﻿using System;
 #if USN_USE_ASYNC_METHODS
-using System.Threading.Tasks;
+#if USN_USE_UNITASK
+using Task = Cysharp.Threading.Tasks.UniTask;
 
 #else
-using System.Collections;
+using Task = System.Threading.Tasks.Task;
+#endif
 #endif
 
 namespace UnityScreenNavigator.Runtime.Core.Modal

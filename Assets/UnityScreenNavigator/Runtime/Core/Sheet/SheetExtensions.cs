@@ -1,7 +1,10 @@
 ﻿using System;
 #if USN_USE_ASYNC_METHODS
-using System.Threading.Tasks;
-#else
+#if USN_USE_UNITASK
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else 
+using Task = System.Threading.Tasks.Task;
+#endif
 using System.Collections;
 #endif
 

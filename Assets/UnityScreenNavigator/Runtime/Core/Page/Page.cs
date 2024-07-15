@@ -6,7 +6,14 @@ using UnityScreenNavigator.Runtime.Core.Shared;
 using UnityScreenNavigator.Runtime.Foundation;
 using UnityScreenNavigator.Runtime.Foundation.Coroutine;
 #if USN_USE_ASYNC_METHODS
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+
+#if USN_USE_UNITASK
+#else
 using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
+#endif
 #endif
 
 namespace UnityScreenNavigator.Runtime.Core.Page
@@ -349,6 +356,10 @@ namespace UnityScreenNavigator.Runtime.Core.Page
 #endif
         {
 #if USN_USE_ASYNC_METHODS
+#if USN_USE_UNITASK
+            return target.ToCoroutine();
+
+#else
             async void WaitTaskAndCallback(Task task, Action callback)
             {
                 await task;
@@ -358,6 +369,7 @@ namespace UnityScreenNavigator.Runtime.Core.Page
             var isCompleted = false;
             WaitTaskAndCallback(target, () => { isCompleted = true; });
             return new WaitUntil(() => isCompleted);
+#endif
 #else
             return target;
 #endif

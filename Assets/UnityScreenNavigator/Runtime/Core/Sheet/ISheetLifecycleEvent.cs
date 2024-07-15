@@ -1,8 +1,11 @@
 ﻿#if USN_USE_ASYNC_METHODS
-using System.Threading.Tasks;
-#else
-using System.Collections;
+#if USN_USE_UNITASK
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else 
+using Task = System.Threading.Tasks.Task;
 #endif
+#endif
+using System.Collections;
 
 namespace UnityScreenNavigator.Runtime.Core.Sheet
 {

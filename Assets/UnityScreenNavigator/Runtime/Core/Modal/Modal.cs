@@ -6,7 +6,13 @@ using UnityScreenNavigator.Runtime.Core.Shared;
 using UnityScreenNavigator.Runtime.Foundation;
 using UnityScreenNavigator.Runtime.Foundation.Coroutine;
 #if USN_USE_ASYNC_METHODS
-using System.Threading.Tasks;
+#if USN_USE_UNITASK
+using Task = Cysharp.Threading.Tasks.UniTask;
+using Cysharp.Threading.Tasks;
+
+#else
+using Task = System.Threading.Tasks.Task;
+#endif
 #endif
 
 namespace UnityScreenNavigator.Runtime.Core.Modal
@@ -262,7 +268,7 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
             }
 
             SetTransitionProgress(0.0f);
-            
+
             var routines = push
                 ? _lifecycleEvents.ExecuteLifecycleEventsSequentially(x => x.WillPushExit())
                 : _lifecycleEvents.ExecuteLifecycleEventsSequentially(x => x.WillPopExit());
@@ -311,7 +317,7 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
             IsTransitioning = false;
             TransitionAnimationType = null;
         }
-        
+
         internal void BeforeReleaseAndForget()
         {
             var _ = _lifecycleEvents.ExecuteLifecycleEventsSequentially(x => x.Cleanup());
@@ -344,18 +350,21 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
 #endif
         {
 #if USN_USE_ASYNC_METHODS
+
+#if USN_USE_UNITASK
+            return target.ToCoroutine();
+#endif
+
             async void WaitTaskAndCallback(Task task, Action callback)
             {
                 await task;
                 callback?.Invoke();
             }
-            
+
             var isCompleted = false;
-            WaitTaskAndCallback(target, () =>
-            {
-                isCompleted = true;
-            });
+            WaitTaskAndCallback(target, () => { isCompleted = true; });
             return new WaitUntil(() => isCompleted);
+            return target.ToCoroutine();
 #else
             return target;
 #endif

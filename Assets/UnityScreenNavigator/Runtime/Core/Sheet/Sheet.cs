@@ -6,7 +6,12 @@ using UnityScreenNavigator.Runtime.Core.Shared;
 using UnityScreenNavigator.Runtime.Foundation;
 using UnityScreenNavigator.Runtime.Foundation.Coroutine;
 #if USN_USE_ASYNC_METHODS
-using System.Threading.Tasks;
+#if USN_USE_UNITASK
+using Task = Cysharp.Threading.Tasks.UniTask;
+using Cysharp.Threading.Tasks;
+#else
+using Task = System.Threading.Tasks.Task;
+#endif
 #endif
 
 namespace UnityScreenNavigator.Runtime.Core.Sheet
@@ -37,7 +42,7 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
         }
 
         private readonly CompositeLifecycleEvent<ISheetLifecycleEvent> _lifecycleEvents = new();
-        
+
         public string Identifier
         {
             get => _identifier;
@@ -297,17 +302,17 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
 #endif
         {
 #if USN_USE_ASYNC_METHODS
+#if USN_USE_UNITASK
+            return target.ToCoroutine();
+#endif
             async void WaitTaskAndCallback(Task task, Action callback)
             {
                 await task;
                 callback?.Invoke();
             }
-            
+
             var isCompleted = false;
-            WaitTaskAndCallback(target, () =>
-            {
-                isCompleted = true;
-            });
+            WaitTaskAndCallback(target, () => { isCompleted = true; });
             return new WaitUntil(() => isCompleted);
 #else
             return target;
