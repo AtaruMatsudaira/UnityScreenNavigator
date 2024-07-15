@@ -85,18 +85,29 @@ namespace Demo.Core.Scripts.Composition
                 onLoad: x =>
                 {
                     var page = x.page;
+#if USN_USE_UNITASK
+                    async UniTask WillPushEnter()
+#else
                     async Task WillPushEnter()
+#endif
                     {
                         // Preload the "Shop" page prefab.
                         await MainPageContainer.Preload(ResourceKey.Prefabs.UnitShopPage);
                         // Simulate loading time.
                         await UniTask.Delay(1000);
                     }
-
+#if USN_USE_UNITASK
+                    UniTask WillPopExit()
+#else
                     Task WillPopExit()
+#endif
                     {
                         MainPageContainer.ReleasePreloaded(ResourceKey.Prefabs.UnitShopPage);
+#if USN_USE_UNITASK
+                        return UniTask.CompletedTask;
+#else
                         return Task.CompletedTask;
+#endif
                     }
 
                     page.AddLifecycleEvent(onWillPushEnter: WillPushEnter, onWillPopExit: WillPopExit);

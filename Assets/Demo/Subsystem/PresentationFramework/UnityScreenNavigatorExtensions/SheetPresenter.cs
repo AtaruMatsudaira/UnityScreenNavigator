@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityScreenNavigator.Runtime.Core.Sheet;
 
 namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
@@ -18,6 +19,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewDidLoad(View);
         }
+#elif USN_USE_UNITASK
+        UniTask ISheetLifecycleEvent.Initialize()
+        {
+            return ViewDidLoad(View);
+        }
 #else
         IEnumerator ISheetLifecycleEvent.Initialize()
         {
@@ -27,6 +33,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
 
 #if USN_USE_ASYNC_METHODS
         Task ISheetLifecycleEvent.WillEnter()
+        {
+            return ViewWillEnter(View);
+        }
+#elif USN_USE_UNITASK
+        UniTask ISheetLifecycleEvent.WillEnter()
         {
             return ViewWillEnter(View);
         }
@@ -47,6 +58,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewWillExit(View);
         }
+#elif USN_USE_UNITASK
+        UniTask ISheetLifecycleEvent.WillExit()
+        {
+            return ViewWillExit(View);
+        }
 #else
         IEnumerator ISheetLifecycleEvent.WillExit()
         {
@@ -64,6 +80,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewWillDestroy(View);
         }
+#elif USN_USE_UNITASK
+        UniTask ISheetLifecycleEvent.Cleanup()
+        {
+            return ViewWillDestroy(View);
+        }
 #else
         IEnumerator ISheetLifecycleEvent.Cleanup()
         {
@@ -76,6 +97,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewDidLoad(TSheet view)
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         protected virtual IEnumerator ViewDidLoad(TSheet view)
         {
@@ -87,6 +113,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         protected virtual Task ViewWillEnter(TSheet view)
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillEnter(TSheet view)
+        {
+            return UniTask.CompletedTask;
         }
 #else
         protected virtual IEnumerator ViewWillEnter(TSheet view)
@@ -104,6 +135,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillExit(TSheet view)
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         protected virtual IEnumerator ViewWillExit(TSheet view)
         {
@@ -119,6 +155,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         protected virtual Task ViewWillDestroy(TSheet view)
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillDestroy(TSheet view)
+        {
+            return UniTask.CompletedTask;
         }
 #else
         protected virtual IEnumerator ViewWillDestroy(TSheet view)

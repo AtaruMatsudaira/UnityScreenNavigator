@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Demo.Core.Scripts.Foundation.Common;
 using Demo.Core.Scripts.Presentation.Shared;
 using Demo.Core.Scripts.View.UnitPortraitViewer;
@@ -19,13 +20,13 @@ namespace Demo.Core.Scripts.Presentation.UnitPortraitViewer
             _unitRank = unitRank;
         }
 
-        protected override Task ViewDidLoad(UnitPortraitViewerModal view, UnitPortraitViewerViewState viewState)
+        protected override UniTask ViewDidLoad(UnitPortraitViewerModal view, UnitPortraitViewerViewState viewState)
         {
             viewState.Portrait.ImageResourceKey.Value =
                 ResourceKey.Textures.GetUnitPortrait(_unitTypeMasterId, _unitRank);
             viewState.OnCloseButtonClicked.Subscribe(_ => TransitionService.PopCommandExecuted());
 
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
     }
 }

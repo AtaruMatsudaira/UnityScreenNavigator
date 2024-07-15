@@ -29,7 +29,7 @@ namespace Demo.Core.Scripts.Presentation.UnitShop
             _connectingView = connectingView;
         }
 
-        protected override async Task ViewDidLoad(UnitShopPage view, UnitShopViewState viewState)
+        protected override async UniTask ViewDidLoad(UnitShopPage view, UnitShopViewState viewState)
         {
             IUnitShopItemMasterTable masterTable = null;
             await UniTask.WhenAll(

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine.Assertions;
 using UnityScreenNavigator.Runtime.Core.Page;
 
@@ -33,6 +34,19 @@ namespace Demo.Subsystem.PresentationFramework
                 _isInitialized = true;
             }
         }
+#elif USN_USE_UNITASK
+        public override async UniTask Initialize()
+        {
+            Assert.IsNotNull(root);
+
+            await base.Initialize();
+
+            if (RootInitializationTiming == ViewInitializationTiming.Initialize && !_isInitialized)
+            {
+                await root.InitializeAsync(_state);
+                _isInitialized = true;
+            }
+        }
 #else
         public override IEnumerator Initialize()
         {
@@ -50,6 +64,19 @@ namespace Demo.Subsystem.PresentationFramework
 
 #if USN_USE_ASYNC_METHODS
         public override async Task WillPushEnter()
+        {
+            Assert.IsNotNull(root);
+
+            await base.WillPushEnter();
+
+            if (RootInitializationTiming == ViewInitializationTiming.BeforeFirstEnter && !_isInitialized)
+            {
+                await root.InitializeAsync(_state);
+                _isInitialized = true;
+            }
+        }
+#elif USN_USE_UNITASK
+        public override async UniTask WillPushEnter()
         {
             Assert.IsNotNull(root);
 

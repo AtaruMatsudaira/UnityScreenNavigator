@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Demo.Subsystem.Misc;
 using Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions;
 
@@ -30,7 +31,7 @@ namespace Demo.Subsystem.PresentationFramework
             base.Initialize(view);
         }
 
-        protected sealed override async Task ViewDidLoad(TSheet view)
+        protected sealed override async UniTask ViewDidLoad(TSheet view)
         {
             await base.ViewDidLoad(view);
             var state = new TRootViewState();
@@ -40,7 +41,7 @@ namespace Demo.Subsystem.PresentationFramework
             await ViewDidLoad(view, _state);
         }
 
-        protected sealed override async Task ViewWillEnter(TSheet view)
+        protected sealed override async UniTask ViewWillEnter(TSheet view)
         {
             await base.ViewWillEnter(view);
             await ViewWillEnter(view, _state);
@@ -52,7 +53,7 @@ namespace Demo.Subsystem.PresentationFramework
             ViewDidEnter(view, _state);
         }
 
-        protected sealed override async Task ViewWillExit(TSheet view)
+        protected sealed override async UniTask ViewWillExit(TSheet view)
         {
             await base.ViewWillExit(view);
             await ViewWillExit(view, _state);
@@ -64,38 +65,38 @@ namespace Demo.Subsystem.PresentationFramework
             ViewDidExit(view, _state);
         }
 
-        protected override async Task ViewWillDestroy(TSheet view)
+        protected override async UniTask ViewWillDestroy(TSheet view)
         {
             await base.ViewWillDestroy(view);
             await ViewWillDestroy(view, _state);
         }
 
-        protected virtual Task ViewDidLoad(TSheet view, TRootViewState viewState)
+        protected virtual UniTask ViewDidLoad(TSheet view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
-        protected virtual Task ViewWillEnter(TSheet view, TRootViewState viewState)
+        protected virtual UniTask ViewWillEnter(TSheet view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         protected virtual void ViewDidEnter(TSheet view, TRootViewState viewState)
         {
         }
 
-        protected virtual Task ViewWillExit(TSheet view, TRootViewState viewState)
+        protected virtual UniTask ViewWillExit(TSheet view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         protected virtual void ViewDidExit(TSheet view, TRootViewState viewState)
         {
         }
 
-        protected virtual Task ViewWillDestroy(TSheet view, TRootViewState viewState)
+        protected virtual UniTask ViewWillDestroy(TSheet view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         protected sealed override void Dispose(TSheet view)

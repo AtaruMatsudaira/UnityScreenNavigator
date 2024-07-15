@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Demo.Core.Scripts.Presentation.Shared;
 using Demo.Core.Scripts.View.Top;
 using Demo.Subsystem.Misc;
@@ -12,11 +13,11 @@ namespace Demo.Core.Scripts.Presentation.Top
         {
         }
 
-        protected override Task ViewDidLoad(TopPage view, TopViewState viewState)
+        protected override UniTask ViewDidLoad(TopPage view, TopViewState viewState)
         {
             viewState.OnClicked.Subscribe(_ => TransitionService.TopPageClicked()).AddTo(this);
 
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
     }
 }

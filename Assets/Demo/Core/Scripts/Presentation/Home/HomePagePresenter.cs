@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Demo.Core.Scripts.Domain.FeatureFlag.MasterRepository;
 using Demo.Core.Scripts.Presentation.Shared;
 using Demo.Core.Scripts.View.Home;
@@ -18,7 +19,7 @@ namespace Demo.Core.Scripts.Presentation.Home
             _featureFlagMasterRepository = featureFlagMasterRepository;
         }
 
-        protected override async Task ViewDidLoad(HomePage view, HomeViewState viewState)
+        protected override async UniTask ViewDidLoad(HomePage view, HomeViewState viewState)
         {
             var featureFlagMasterTable = await _featureFlagMasterRepository.FetchTableAsync();
 
