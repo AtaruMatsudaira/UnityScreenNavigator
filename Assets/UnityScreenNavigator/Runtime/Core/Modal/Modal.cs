@@ -7,6 +7,8 @@ using UnityScreenNavigator.Runtime.Foundation;
 using UnityScreenNavigator.Runtime.Foundation.Coroutine;
 #if USN_USE_ASYNC_METHODS
 using System.Threading.Tasks;
+#elif USN_USE_UNITASK
+using Cysharp.Threading.Tasks;
 #endif
 
 namespace UnityScreenNavigator.Runtime.Core.Modal
@@ -70,6 +72,11 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
         {
             return Task.CompletedTask;
         }
+#elif  USN_USE_UNITASK
+        public virtual UniTask Initialize()
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         public virtual IEnumerator Initialize()
         {
@@ -81,6 +88,11 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
         public virtual Task WillPushEnter()
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        public virtual UniTask WillPushEnter()
+        {
+            return UniTask.CompletedTask;
         }
 #else
         public virtual IEnumerator WillPushEnter()
@@ -98,6 +110,11 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        public virtual UniTask WillPushExit()
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         public virtual IEnumerator WillPushExit()
         {
@@ -113,6 +130,11 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
         public virtual Task WillPopEnter()
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        public virtual UniTask WillPopEnter()
+        {
+            return UniTask.CompletedTask;
         }
 #else
         public virtual IEnumerator WillPopEnter()
@@ -130,6 +152,11 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        public virtual UniTask WillPopExit()
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         public virtual IEnumerator WillPopExit()
         {
@@ -145,6 +172,11 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
         public virtual Task Cleanup()
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        public virtual UniTask Cleanup()
+        {
+            return UniTask.CompletedTask;
         }
 #else
         public virtual IEnumerator Cleanup()
@@ -325,6 +357,8 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
 
 #if USN_USE_ASYNC_METHODS
         private IEnumerator CreateCoroutine(IEnumerable<Task> targets)
+#elif USN_USE_UNITASK
+        private IEnumerator CreateCoroutine(IEnumerable<UniTask> targets)
 #else
         private IEnumerator CreateCoroutine(IEnumerable<IEnumerator> targets)
 #endif
@@ -339,6 +373,8 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
 
 #if USN_USE_ASYNC_METHODS
         private IEnumerator CreateCoroutine(Task target)
+#elif USN_USE_UNITASK
+        private IEnumerator CreateCoroutine(UniTask target)
 #else
         private IEnumerator CreateCoroutine(IEnumerator target)
 #endif
@@ -356,6 +392,8 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
                 isCompleted = true;
             });
             return new WaitUntil(() => isCompleted);
+#elif USN_USE_UNITASK
+            return target.ToCoroutine();
 #else
             return target;
 #endif

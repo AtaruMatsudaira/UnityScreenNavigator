@@ -7,6 +7,8 @@ using UnityScreenNavigator.Runtime.Foundation;
 using UnityScreenNavigator.Runtime.Foundation.Coroutine;
 #if USN_USE_ASYNC_METHODS
 using System.Threading.Tasks;
+#elif  USN_USE_UNITASK
+using Cysharp.Threading.Tasks;
 #endif
 
 namespace UnityScreenNavigator.Runtime.Core.Sheet
@@ -37,7 +39,7 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
         }
 
         private readonly CompositeLifecycleEvent<ISheetLifecycleEvent> _lifecycleEvents = new();
-        
+
         public string Identifier
         {
             get => _identifier;
@@ -69,6 +71,11 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        public virtual UniTask Initialize()
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         public virtual IEnumerator Initialize()
         {
@@ -80,6 +87,11 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
         public virtual Task WillEnter()
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        public virtual UniTask WillEnter()
+        {
+            return UniTask.CompletedTask;
         }
 #else
         public virtual IEnumerator WillEnter()
@@ -97,6 +109,11 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        public virtual UniTask WillExit()
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         public virtual IEnumerator WillExit()
         {
@@ -112,6 +129,11 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
         public virtual Task Cleanup()
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        public virtual UniTask Cleanup()
+        {
+            return UniTask.CompletedTask;
         }
 #else
         public virtual IEnumerator Cleanup()
@@ -278,6 +300,8 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
 
 #if USN_USE_ASYNC_METHODS
         private IEnumerator CreateCoroutine(IEnumerable<Task> targets)
+#elif USN_USE_UNITASK
+        private IEnumerator CreateCoroutine(IEnumerable<UniTask> targets)
 #else
         private IEnumerator CreateCoroutine(IEnumerable<IEnumerator> targets)
 #endif
@@ -292,6 +316,8 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
 
 #if USN_USE_ASYNC_METHODS
         private IEnumerator CreateCoroutine(Task target)
+#elif USN_USE_UNITASK
+        private IEnumerator CreateCoroutine(UniTask target)
 #else
         private IEnumerator CreateCoroutine(IEnumerator target)
 #endif
@@ -309,6 +335,8 @@ namespace UnityScreenNavigator.Runtime.Core.Sheet
                 isCompleted = true;
             });
             return new WaitUntil(() => isCompleted);
+#elif USN_USE_UNITASK
+            return target.ToCoroutine();
 #else
             return target;
 #endif

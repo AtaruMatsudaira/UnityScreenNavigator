@@ -1,7 +1,8 @@
 ﻿using System;
 #if USN_USE_ASYNC_METHODS
 using System.Threading.Tasks;
-
+#elif USN_USE_UNITASK
+using Cysharp.Threading.Tasks;
 #else
 using System.Collections;
 #endif
@@ -16,6 +17,13 @@ namespace UnityScreenNavigator.Runtime.Core.Modal
             Func<Task> onWillPushExit = null, Action onDidPushExit = null,
             Func<Task> onWillPopEnter = null, Action onDidPopEnter = null,
             Func<Task> onWillPopExit = null, Action onDidPopExit = null, Func<Task> onCleanup = null,
+            int priority = 0)
+#elif USN_USE_UNITASK
+        public static void AddLifecycleEvent(this Modal self, Func<UniTask> initialize = null,
+            Func<UniTask> onWillPushEnter = null, Action onDidPushEnter = null,
+            Func<UniTask> onWillPushExit = null, Action onDidPushExit = null,
+            Func<UniTask> onWillPopEnter = null, Action onDidPopEnter = null,
+            Func<UniTask> onWillPopExit = null, Action onDidPopExit = null, Func<UniTask> onCleanup = null,
             int priority = 0)
 #else
         public static void AddLifecycleEvent(this Modal self, Func<IEnumerator> initialize = null,

@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+#if USN_USE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 using UnityScreenNavigator.Runtime.Foundation.Coroutine;
 
 namespace UnityScreenNavigator.Runtime.Core.Shared
@@ -67,6 +70,20 @@ namespace UnityScreenNavigator.Runtime.Core.Shared
                 await Task.WhenAll(tasks);
             }
         }
+
+#if USN_USE_UNITASK
+        public async UniTask ExecuteLifecycleEventsSequentially(Func<TLifecycleEvent, UniTask> execute)
+        {
+            int? currentPriority = null;
+            while ((currentPriority = FindNextPriority(currentPriority)) != null)
+            {
+                // LifecycleEvents with the same Priority are executed in parallel.
+                var lifecycleEvents = GetItems(currentPriority.Value);
+                var tasks = lifecycleEvents.Select(execute).ToArray();
+                await UniTask.WhenAll(tasks);
+            }
+        }
+#endif
 
         public IEnumerator ExecuteLifecycleEventsSequentially(Func<TLifecycleEvent, IEnumerator> execute)
         {

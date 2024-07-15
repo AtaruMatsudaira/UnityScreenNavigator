@@ -3,7 +3,8 @@ using System.Collections.Generic;
 #if USN_USE_ASYNC_METHODS
 using System.Threading.Tasks;
 using System.Linq;
-
+#elif USN_USE_UNITASK
+using Cysharp.Threading.Tasks;
 #else
 using System.Collections;
 #endif
@@ -19,6 +20,13 @@ namespace UnityScreenNavigator.Runtime.Core.Page
             Func<Task> onWillPopEnter = null, Action onDidPopEnter = null,
             Func<Task> onWillPopExit = null, Action onDidPopExit = null,
             Func<Task> onCleanup = null)
+#elif USN_USE_UNITASK
+        public AnonymousPageLifecycleEvent(Func<UniTask> initialize = null,
+            Func<UniTask> onWillPushEnter = null, Action onDidPushEnter = null,
+            Func<UniTask> onWillPushExit = null, Action onDidPushExit = null,
+            Func<UniTask> onWillPopEnter = null, Action onDidPopEnter = null,
+            Func<UniTask> onWillPopExit = null, Action onDidPopExit = null,
+            Func<UniTask> onCleanup = null)
 #else
         public AnonymousPageLifecycleEvent(Func<IEnumerator> initialize = null,
             Func<IEnumerator> onWillPushEnter = null, Action onDidPushEnter = null,
@@ -62,6 +70,14 @@ namespace UnityScreenNavigator.Runtime.Core.Page
         public List<Func<Task>> OnWillPopEnter { get; } = new List<Func<Task>>();
         public List<Func<Task>> OnWillPopExit { get; } = new List<Func<Task>>();
         public List<Func<Task>> OnCleanup { get; } = new List<Func<Task>>();
+#elif USN_USE_UNITASK
+        public List<Func<UniTask>> OnInitialize { get; } = new List<Func<UniTask>>();
+        public List<Func<UniTask>> OnWillPushEnter { get; } = new List<Func<UniTask>>();
+        public List<Func<UniTask>> OnWillPushExit { get; } = new List<Func<UniTask>>();
+        public List<Func<UniTask>> OnWillPopEnter { get; } = new List<Func<UniTask>>();
+        public List<Func<UniTask>> OnWillPopExit { get; } = new List<Func<UniTask>>();
+        public List<Func<UniTask>> OnCleanup { get; } = new List<Func<UniTask>>();
+
 #else
         public List<Func<IEnumerator>> OnInitialize { get; } = new List<Func<IEnumerator>>();
         public List<Func<IEnumerator>> OnWillPushEnter { get; } = new List<Func<IEnumerator>>();
@@ -76,6 +92,11 @@ namespace UnityScreenNavigator.Runtime.Core.Page
         {
             return Task.WhenAll(OnInitialize.Select(x => x.Invoke()));
         }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.Initialize()
+        {
+            return UniTask.WhenAll(OnInitialize.Select(x => x.Invoke()));
+        }
 #else
         IEnumerator IPageLifecycleEvent.Initialize()
         {
@@ -88,6 +109,11 @@ namespace UnityScreenNavigator.Runtime.Core.Page
         Task IPageLifecycleEvent.WillPushEnter()
         {
             return Task.WhenAll(OnWillPushEnter.Select(x => x.Invoke()));
+        }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.WillPushEnter()
+        {
+            return UniTask.WhenAll(OnWillPushEnter.Select(x => x.Invoke()));
         }
 #else
         IEnumerator IPageLifecycleEvent.WillPushEnter()
@@ -107,6 +133,12 @@ namespace UnityScreenNavigator.Runtime.Core.Page
         {
             return Task.WhenAll(OnWillPushExit.Select(x => x.Invoke()));
         }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.WillPushExit()
+        {
+            return UniTask.WhenAll(OnWillPushExit.Select(x => x.Invoke()));
+        }
+
 #else
         IEnumerator IPageLifecycleEvent.WillPushExit()
         {
@@ -125,6 +157,12 @@ namespace UnityScreenNavigator.Runtime.Core.Page
         {
             return Task.WhenAll(OnWillPopEnter.Select(x => x.Invoke()));
         }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.WillPopEnter()
+        {
+            return UniTask.WhenAll(OnWillPopEnter.Select(x => x.Invoke()));
+        }
+
 #else
         IEnumerator IPageLifecycleEvent.WillPopEnter()
         {
@@ -143,6 +181,12 @@ namespace UnityScreenNavigator.Runtime.Core.Page
         {
             return Task.WhenAll(OnWillPopExit.Select(x => x.Invoke()));
         }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.WillPopExit()
+        {
+            return UniTask.WhenAll(OnWillPopExit.Select(x => x.Invoke()));
+        }
+
 #else
         IEnumerator IPageLifecycleEvent.WillPopExit()
         {
@@ -160,6 +204,11 @@ namespace UnityScreenNavigator.Runtime.Core.Page
         Task IPageLifecycleEvent.Cleanup()
         {
             return Task.WhenAll(OnCleanup.Select(x => x.Invoke()));
+        }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.Cleanup()
+        {
+            return UniTask.WhenAll(OnCleanup.Select(x => x.Invoke()));
         }
 #else
         IEnumerator IPageLifecycleEvent.Cleanup()
