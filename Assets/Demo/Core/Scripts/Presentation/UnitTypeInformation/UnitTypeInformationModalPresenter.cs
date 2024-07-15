@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Demo.Core.Scripts.Domain.Unit.MasterRepository;
 using Demo.Core.Scripts.Foundation.Common;
 using Demo.Core.Scripts.Presentation.Shared;
@@ -21,7 +22,7 @@ namespace Demo.Core.Scripts.Presentation.UnitTypeInformation
             _unitMasterRepository = unitMasterRepository;
         }
 
-        protected override async Task ViewDidLoad(UnitTypeInformationModal view, UnitTypeInformationViewState viewState)
+        protected override async UniTask ViewDidLoad(UnitTypeInformationModal view, UnitTypeInformationViewState viewState)
         {
             var unitTypeTable = await _unitMasterRepository.FetchUnitTypeTableAsync();
             var unitTypeMaster = unitTypeTable.FindById(_unitTypeMasterId);

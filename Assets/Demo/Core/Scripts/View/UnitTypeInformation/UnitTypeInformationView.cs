@@ -58,10 +58,19 @@ namespace Demo.Core.Scripts.View.UnitTypeInformation
             unitPortraitTabGroup.OnTabLoaded
                 .Subscribe(x =>
                 {
+#if USN_USE_UNITASK
+                    UniTask WillEnter()
+#else
                     Task WillEnter()
+#endif
                     {
                         viewState.TabIndex.Value = x.Index;
+
+#if USN_USE_UNITASK
+                        return UniTask.CompletedTask;
+#else
                         return Task.CompletedTask;
+#endif
                     }
 
                     var unitImageSheet = (UnitPortraitSheet)x.Sheet;

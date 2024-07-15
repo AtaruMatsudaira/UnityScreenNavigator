@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityScreenNavigator.Runtime.Core.Page;
 
 namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
@@ -17,6 +18,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewDidLoad(View);
         }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.Initialize()
+        {
+            return ViewDidLoad(View);
+        }
 #else
         IEnumerator IPageLifecycleEvent.Initialize()
         {
@@ -26,6 +32,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
 
 #if USN_USE_ASYNC_METHODS
         Task IPageLifecycleEvent.WillPushEnter()
+        {
+            return ViewWillPushEnter(View);
+        }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.WillPushEnter()
         {
             return ViewWillPushEnter(View);
         }
@@ -46,6 +57,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewWillPushExit(View);
         }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.WillPushExit()
+        {
+            return ViewWillPopExit(View);
+        }
 #else
         IEnumerator IPageLifecycleEvent.WillPushExit()
         {
@@ -60,6 +76,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
 
 #if USN_USE_ASYNC_METHODS
         Task IPageLifecycleEvent.WillPopEnter()
+        {
+            return ViewWillPopEnter(View);
+        }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.WillPopEnter()
         {
             return ViewWillPopEnter(View);
         }
@@ -80,6 +101,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewWillPopExit(View);
         }
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.WillPopExit()
+        {
+            return ViewWillPopExit(View);
+        }
 #else
         IEnumerator IPageLifecycleEvent.WillPopExit()
         {
@@ -97,6 +123,12 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewWillDestroy(View);
         }
+        
+#elif USN_USE_UNITASK
+        UniTask IPageLifecycleEvent.Cleanup()
+        {
+            return ViewWillDestroy(View);
+        }
 #else
         IEnumerator IPageLifecycleEvent.Cleanup()
         {
@@ -109,6 +141,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewDidLoad(TPage view)
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         protected virtual IEnumerator ViewDidLoad(TPage view)
         {
@@ -120,6 +157,12 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         protected virtual Task ViewWillPushEnter(TPage view)
         {
             return Task.CompletedTask;
+        }
+
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillPushEnter(TPage view)
+        {
+            return UniTask.CompletedTask;
         }
 #else
         protected virtual IEnumerator ViewWillPushEnter(TPage view)
@@ -137,6 +180,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillPushExit(TPage view)
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         protected virtual IEnumerator ViewWillPushExit(TPage view)
         {
@@ -152,6 +200,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         protected virtual Task ViewWillPopEnter(TPage view)
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillPopEnter(TPage view)
+        {
+            return UniTask.CompletedTask;
         }
 #else
         protected virtual IEnumerator ViewWillPopEnter(TPage view)
@@ -169,6 +222,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillPopExit(TPage view)
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         protected virtual IEnumerator ViewWillPopExit(TPage view)
         {
@@ -184,6 +242,12 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         protected virtual Task ViewWillDestroy(TPage view)
         {
             return Task.CompletedTask;
+        }
+
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillDestroy(TPage view)
+        {
+            return UniTask.CompletedTask;
         }
 #else
         protected virtual IEnumerator ViewWillDestroy(TPage view)

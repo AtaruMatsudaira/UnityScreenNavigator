@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Demo.Subsystem.Misc;
 using Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions;
 
@@ -30,7 +31,7 @@ namespace Demo.Subsystem.PresentationFramework
             base.Initialize(view);
         }
 
-        protected sealed override async Task ViewDidLoad(TModal view)
+        protected sealed override async UniTask ViewDidLoad(TModal view)
         {
             await base.ViewDidLoad(view);
             var state = new TRootViewState();
@@ -40,7 +41,7 @@ namespace Demo.Subsystem.PresentationFramework
             await ViewDidLoad(view, _state);
         }
 
-        protected sealed override async Task ViewWillPushEnter(TModal view)
+        protected sealed override async UniTask ViewWillPushEnter(TModal view)
         {
             await base.ViewWillPushEnter(view);
             await ViewWillPushEnter(view, _state);
@@ -52,7 +53,7 @@ namespace Demo.Subsystem.PresentationFramework
             ViewDidPushEnter(view, _state);
         }
 
-        protected sealed override async Task ViewWillPushExit(TModal view)
+        protected sealed override async UniTask ViewWillPushExit(TModal view)
         {
             await base.ViewWillPushExit(view);
             await ViewWillPushExit(view, _state);
@@ -64,7 +65,7 @@ namespace Demo.Subsystem.PresentationFramework
             ViewDidPushExit(view, _state);
         }
 
-        protected sealed override async Task ViewWillPopEnter(TModal view)
+        protected sealed override async UniTask ViewWillPopEnter(TModal view)
         {
             await base.ViewWillPopEnter(view);
             await ViewWillPopEnter(view, _state);
@@ -76,7 +77,7 @@ namespace Demo.Subsystem.PresentationFramework
             ViewDidPopEnter(view, _state);
         }
 
-        protected sealed override async Task ViewWillPopExit(TModal view)
+        protected sealed override async UniTask ViewWillPopExit(TModal view)
         {
             await base.ViewWillPopExit(view);
             await ViewWillPopExit(view, _state);
@@ -88,56 +89,56 @@ namespace Demo.Subsystem.PresentationFramework
             ViewDidPopExit(view, _state);
         }
 
-        protected override async Task ViewWillDestroy(TModal view)
+        protected override async UniTask ViewWillDestroy(TModal view)
         {
             await base.ViewWillDestroy(view);
             await ViewWillDestroy(view, _state);
         }
 
-        protected virtual Task ViewDidLoad(TModal view, TRootViewState viewState)
+        protected virtual UniTask ViewDidLoad(TModal view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
-        protected virtual Task ViewWillPushEnter(TModal view, TRootViewState viewState)
+        protected virtual UniTask ViewWillPushEnter(TModal view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         protected virtual void ViewDidPushEnter(TModal view, TRootViewState viewState)
         {
         }
 
-        protected virtual Task ViewWillPushExit(TModal view, TRootViewState viewState)
+        protected virtual UniTask ViewWillPushExit(TModal view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         protected virtual void ViewDidPushExit(TModal view, TRootViewState viewState)
         {
         }
 
-        protected virtual Task ViewWillPopEnter(TModal view, TRootViewState viewState)
+        protected virtual UniTask ViewWillPopEnter(TModal view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         protected virtual void ViewDidPopEnter(TModal view, TRootViewState viewState)
         {
         }
 
-        protected virtual Task ViewWillPopExit(TModal view, TRootViewState viewState)
+        protected virtual UniTask ViewWillPopExit(TModal view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         protected virtual void ViewDidPopExit(TModal view, TRootViewState viewState)
         {
         }
 
-        protected virtual Task ViewWillDestroy(TModal view, TRootViewState viewState)
+        protected virtual UniTask ViewWillDestroy(TModal view, TRootViewState viewState)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         protected sealed override void Dispose(TModal view)

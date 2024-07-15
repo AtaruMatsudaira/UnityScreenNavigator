@@ -19,7 +19,7 @@ namespace Demo.Core.Scripts.Presentation.Setting
             _useCase = useCase;
         }
 
-        protected override async Task ViewDidLoad(SettingsModal view, SettingsViewState viewState)
+        protected override async UniTask ViewDidLoad(SettingsModal view, SettingsViewState viewState)
         {
             // Update models.
             await _useCase.FetchSoundSettingsAsync();
@@ -74,12 +74,12 @@ namespace Demo.Core.Scripts.Presentation.Setting
             viewState.SoundSettings.IsSeEnabled.Value = !isMuted;
         }
 
-        protected override async Task ViewWillPopExit(SettingsModal view, SettingsViewState viewState)
+        protected override async UniTask ViewWillPopExit(SettingsModal view, SettingsViewState viewState)
         {
             await ViewWillExit(view, viewState);
         }
 
-        protected override async Task ViewWillPushExit(SettingsModal view, SettingsViewState viewState)
+        protected override async UniTask ViewWillPushExit(SettingsModal view, SettingsViewState viewState)
         {
             await ViewWillExit(view, viewState);
         }

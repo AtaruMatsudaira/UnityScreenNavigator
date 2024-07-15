@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityScreenNavigator.Runtime.Core.Modal;
 
 namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
@@ -17,6 +18,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewDidLoad(View);
         }
+#elif USN_USE_UNITASK
+        UniTask IModalLifecycleEvent.Initialize()
+        {
+            return ViewDidLoad(View);
+        }
 #else
         IEnumerator IModalLifecycleEvent.Initialize()
         {
@@ -26,6 +32,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
 
 #if USN_USE_ASYNC_METHODS
         Task IModalLifecycleEvent.WillPushEnter()
+        {
+            return ViewWillPushEnter(View);
+        }
+#elif USN_USE_UNITASK
+        UniTask IModalLifecycleEvent.WillPushEnter()
         {
             return ViewWillPushEnter(View);
         }
@@ -46,6 +57,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewWillPushExit(View);
         }
+#elif USN_USE_UNITASK
+        UniTask IModalLifecycleEvent.WillPushExit()
+        {
+            return ViewWillPushExit(View);
+        }
 #else
         IEnumerator IModalLifecycleEvent.WillPushExit()
         {
@@ -60,6 +76,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
 
 #if USN_USE_ASYNC_METHODS
         Task IModalLifecycleEvent.WillPopEnter()
+        {
+            return ViewWillPopEnter(View);
+        }
+#elif USN_USE_UNITASK
+        UniTask IModalLifecycleEvent.WillPopEnter()
         {
             return ViewWillPopEnter(View);
         }
@@ -80,6 +101,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewWillPopExit(View);
         }
+#elif USN_USE_UNITASK
+        UniTask IModalLifecycleEvent.WillPopExit()
+        {
+            return ViewWillPopExit(View);
+        }
 #else
         IEnumerator IModalLifecycleEvent.WillPopExit()
         {
@@ -97,6 +123,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return ViewWillDestroy(View);
         }
+#elif USN_USE_UNITASK
+        UniTask IModalLifecycleEvent.Cleanup()
+        {
+            return ViewWillDestroy(View);
+        }
 #else
         IEnumerator IModalLifecycleEvent.Cleanup()
         {
@@ -108,6 +139,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         protected virtual Task ViewDidLoad(TModal view)
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewDidLoad(TModal view)
+        {
+            return UniTask.CompletedTask;
         }
 #else
         protected virtual IEnumerator ViewDidLoad(TModal view)
@@ -121,6 +157,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         protected virtual Task ViewWillPushEnter(TModal view)
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillPushEnter(TModal view)
+        {
+            return UniTask.CompletedTask;
         }
 #else
         protected virtual IEnumerator ViewWillPushEnter(TModal view)
@@ -138,6 +179,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillPushExit(TModal view)
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         protected virtual IEnumerator ViewWillPushExit(TModal view)
         {
@@ -153,6 +199,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         protected virtual Task ViewWillPopEnter(TModal view)
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillPopEnter(TModal view)
+        {
+            return UniTask.CompletedTask;
         }
 #else
         protected virtual IEnumerator ViewWillPopEnter(TModal view)
@@ -170,6 +221,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         {
             return Task.CompletedTask;
         }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillPopExit(TModal view)
+        {
+            return UniTask.CompletedTask;
+        }
 #else
         protected virtual IEnumerator ViewWillPopExit(TModal view)
         {
@@ -185,6 +241,11 @@ namespace Demo.Subsystem.PresentationFramework.UnityScreenNavigatorExtensions
         protected virtual Task ViewWillDestroy(TModal view)
         {
             return Task.CompletedTask;
+        }
+#elif USN_USE_UNITASK
+        protected virtual UniTask ViewWillDestroy(TModal view)
+        {
+            return UniTask.CompletedTask;
         }
 #else
         protected virtual IEnumerator ViewWillDestroy(TModal view)
